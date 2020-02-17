@@ -1,0 +1,26 @@
+﻿@page "/conferences/{id:guid}"
+
+<h3>Conference Details</h3>
+
+<EditForm Model="_conference">
+    <div class="form-group">
+        <label for="title">Title</label>
+        <input disabled type="text" value="@_conference.Title" class="form-control" id="title" placeholder="Title of the conference">
+    </div>
+    <div class="form-group">
+        <label for="city">City</label>
+        <input disabled type="text" value="@_conference.City" class="form-control" id="city" placeholder="Location">
+    </div>
+    <div class="form-group">
+        <label for="country">Country</label>
+        <input disabled type="text" value="@_conference.Country" class="form-control" id="country" placeholder="Location">
+    </div>
+    <div class="form-group">
+        <label for="datefrom">From</label>
+        <InputDate @bind-Value="@_conference.DateFrom" disabled class="form-control" id="datefrom" placeholder="Location"></InputDate>
+    </div>
+    <div class="form-group">
+        <label for="dateto">To</label>
+        <input disabled type="date" value="@_conference.DateTo" class="form-control" id="dateto" placeholder="Location">
+    </div>
+</EditForm>

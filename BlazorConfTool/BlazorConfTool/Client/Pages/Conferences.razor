@@ -1,7 +1,45 @@
-﻿@page "/fetchdata"
+﻿@page "/conferences"
 
-@using BlazorConfTool.Shared
+@using DTO = BlazorConfTool.Shared.DTO
 
-@inject HttpClient Http
+@inject HttpClient _http
+@inject NavigationManager  _navigation
 
 <h1>Conferences</h1>
+
+@if (_conferences == null)
+{
+    <p><em>Fetching conferences...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Title</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var conf in _conferences)
+            {
+                <tr @onclick="() => LoadDetails(conf.ID)">
+                    <td>@conf.Title</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private IEnumerable<DTO.Conference> _conferences;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _conferences = await _http.GetJsonAsync<DTO.Conference[]>("api/conferences");
+    }
+
+    private void LoadDetails(Guid id)
+    {
+        _navigation.NavigateTo("conferences/" + id);
+    }
+}
