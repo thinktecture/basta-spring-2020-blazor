@@ -1,5 +1,6 @@
 using AutoMapper;
 using BlazorConfTool.Server.Model;
+using BlazorConfTool.Shared;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.ResponseCompression;
@@ -15,6 +16,7 @@ namespace BlazorConfTool.Server
     {
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddTransient<ConferenceValidator>();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             services.AddDbContext<ConferencesDbContext>(

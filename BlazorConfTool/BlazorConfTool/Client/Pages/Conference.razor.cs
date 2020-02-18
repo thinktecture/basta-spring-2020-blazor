@@ -1,6 +1,7 @@
 ﻿using BlazorConfTool.Client.Services;
 using BlazorConfTool.Shared.DTO;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Forms;
 using System;
 using System.Threading.Tasks;
 
@@ -43,7 +44,7 @@ namespace BlazorConfTool.Client.Pages
             }
         }
 
-        private async Task SaveConference()
+        private async Task SaveConference(EditContext editContext)
         {
             await _conferencesService.AddConference(_conferenceDetails);
 
