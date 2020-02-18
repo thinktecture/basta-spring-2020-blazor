@@ -1,8 +1,4 @@
-﻿@using Microsoft.AspNetCore.SignalR.Client
-
-@inject NavigationManager _navigationManager
-
-<Router AppAssembly="@typeof(Program).Assembly">
+﻿<Router AppAssembly="@typeof(Program).Assembly">
     <Found Context="routeData">
         <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
     </Found>
@@ -12,23 +8,3 @@
         </LayoutView>
     </NotFound>
 </Router>
-
-@code {
-    private HubConnection _hubConnection;
-
-    protected override async Task OnInitializedAsync()
-    {
-        _hubConnection = new HubConnectionBuilder()
-            .WithUrl(_navigationManager.ToAbsoluteUri("/conferencesHub"))
-            .Build();
-
-        _hubConnection.On("NewConferenceAdded", () =>
-        {
-            Console.WriteLine("###SignalR - NEW conference added!");
-
-            //StateHasChanged();
-        });
-
-        await _hubConnection.StartAsync();
-    }
-}
