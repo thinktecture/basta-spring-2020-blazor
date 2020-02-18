@@ -45,7 +45,7 @@ namespace BlazorConfTool.Client.Pages
 
         private async Task SaveConference()
         {
-            // await _conferencesService.AddConference(_conferenceDetails);
+            await _conferencesService.AddConference(_conferenceDetails);
 
             Console.WriteLine("NEW Conference added...");
         }

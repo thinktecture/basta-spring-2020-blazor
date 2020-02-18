@@ -1,20 +1,7 @@
 ﻿@page "/conferences/{mode}"
 @page "/conferences/{mode}/{id:guid}"
 
-@switch (Mode)
-{
-    case Modes.Show:
-        <h3>Conference Details</h3>
-        break;
-
-    case Modes.New:
-        <h3>New Conference</h3>
-        break;
-
-    case Modes.Edit:
-        <h3>Edit Conference</h3>
-        break;
-}
+<ConferenceHeader Mode="@Mode" />
 
 <EditForm Model="@_conferenceDetails" OnValidSubmit="@SaveConference" OnInvalidSubmit="@Debug">
     <DataAnnotationsValidator />
