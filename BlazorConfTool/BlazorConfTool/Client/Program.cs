@@ -18,6 +18,8 @@ namespace BlazorConfTool.Client
             builder.Services.AddSingleton<ConferencesService>();
             builder.Services.AddSingleton<CountriesService>();
 
+            builder.Services.AddAlerts();
+
             await builder.Build().RunAsync();
         }
     }

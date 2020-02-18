@@ -19,6 +19,8 @@ namespace BlazorConfTool.Client.Pages
         private bool _isShow { get; set; }
 
         [Inject]
+        private IAlertService _alert { get; set; }
+        [Inject]
         private ConferencesService _conferencesService { get; set; }
         [Inject]
         private CountriesService _countriesService { get; set; }
@@ -57,9 +59,15 @@ namespace BlazorConfTool.Client.Pages
 
         private async Task SaveConference(EditContext editContext)
         {
+            if (!await _alert.ConfirmAsync("Do you want to save this new entry?"))
+            {
+                Console.WriteLine("### User declined to save conference!");
+                return;
+            }
+
             await _conferencesService.AddConference(_conferenceDetails);
 
-            Console.WriteLine("NEW Conference added...");
+            Console.WriteLine("### NEW conference added...");
         }
     }
 }
