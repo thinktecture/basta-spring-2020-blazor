@@ -1,4 +1,5 @@
 using AutoMapper;
+using BlazorConfTool.Server.Hubs;
 using BlazorConfTool.Server.Model;
 using BlazorConfTool.Shared;
 using Microsoft.AspNetCore.Builder;
@@ -17,12 +18,16 @@ namespace BlazorConfTool.Server
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddTransient<ConferenceValidator>();
+
+            services.AddSignalR();
+
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             services.AddDbContext<ConferencesDbContext>(
                 options => options.UseInMemoryDatabase(databaseName: "ConfTool"));
 
             services.AddMvc();
+
             services.AddResponseCompression(opts =>
             {
                 opts.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(
@@ -48,6 +53,7 @@ namespace BlazorConfTool.Server
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapDefaultControllerRoute();
+                endpoints.MapHub<ConferencesHub>("/conferencesHub");
                 endpoints.MapFallbackToClientSideBlazor<Client.Program>("index.html");
             });
         }

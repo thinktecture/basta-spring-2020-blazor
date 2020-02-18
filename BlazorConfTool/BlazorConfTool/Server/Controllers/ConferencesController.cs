@@ -7,6 +7,8 @@ using System.Linq;
 using AutoMapper;
 using System.Threading.Tasks;
 using BlazorConfTool.Shared;
+using Microsoft.AspNetCore.SignalR;
+using BlazorConfTool.Server.Hubs;
 
 namespace BlazorConfTool.Server.Controllers
 {
@@ -18,16 +20,19 @@ namespace BlazorConfTool.Server.Controllers
         private readonly ConferencesDbContext _conferencesDbContext;
         private readonly IMapper _mapper;
         private readonly ConferenceValidator _validator;
+        private readonly IHubContext<ConferencesHub> _hubContext;
 
         public ConferencesController(ILogger<ConferencesController> logger, 
             ConferencesDbContext conferencesDbContext, 
             IMapper mapper,
-            ConferenceValidator validator)
+            ConferenceValidator validator,
+            IHubContext<ConferencesHub> hubContext)
         {
             _logger = logger;
             _conferencesDbContext = conferencesDbContext;
             _mapper = mapper;
             _validator = validator;
+            _hubContext = hubContext;
         }
 
         [HttpGet]
@@ -57,6 +62,8 @@ namespace BlazorConfTool.Server.Controllers
             var conf = _mapper.Map<Conference>(conference);
             _conferencesDbContext.Conferences.Add(conf);
             await _conferencesDbContext.SaveChangesAsync();
+
+            await _hubContext.Clients.All.SendAsync("NewConferenceAdded");
 
             return CreatedAtAction("Get", new { id = conference.ID }, _mapper.Map<Shared.DTO.ConferenceDetails>(conf));
         }
