@@ -2,7 +2,7 @@
 
 namespace BlazorConfTool.Shared.DTO
 {
-    public class Conference
+    public class ConferenceOverview
     {
         public Guid ID { get; set; }
         public string Title { get; set; }

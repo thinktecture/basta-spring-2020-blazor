@@ -17,9 +17,9 @@ namespace BlazorConfTool.Client.Services
             _httpClient = httpClient;
         }
 
-        public async Task<List<Conference>> GetConferences()
+        public async Task<List<ConferenceOverview>> ListConferences()
         {
-            var result = await _httpClient.GetJsonAsync<List<Conference>>(_conferencesUrl);
+            var result = await _httpClient.GetJsonAsync<List<ConferenceOverview>>(_conferencesUrl);
 
             return result;
         }
@@ -27,6 +27,14 @@ namespace BlazorConfTool.Client.Services
         public async Task<ConferenceDetails> GetConferenceDetails(Guid id)
         {
             var result = await _httpClient.GetJsonAsync<ConferenceDetails>(_conferencesUrl + id);
+
+            return result;
+        }
+
+        public async Task<ConferenceDetails> AddConference(ConferenceDetails conference)
+        {
+            var result = await _httpClient.PostJsonAsync<ConferenceDetails>(
+                _conferencesUrl, conference);
 
             return result;
         }

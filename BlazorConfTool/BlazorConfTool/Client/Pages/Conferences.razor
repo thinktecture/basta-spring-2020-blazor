@@ -35,11 +35,11 @@ else
 }
 
 @code {
-    private IEnumerable<DTO.Conference> _conferences;
+    private IEnumerable<DTO.ConferenceOverview> _conferences;
 
     protected override async Task OnInitializedAsync()
     {
-        _conferences = await _http.GetJsonAsync<DTO.Conference[]>("api/conferences");
+        _conferences = await _http.GetJsonAsync<DTO.ConferenceOverview[]>("api/conferences");
     }
 
     private void LoadDetails(Guid id)
@@ -47,8 +47,8 @@ else
         _navigation.NavigateTo("conferences/show/" + id);
     }
 
-    private void AddConference()
+    private void AddConference(MouseEventArgs e)
     {
-
+        _navigation.NavigateTo("conferences/new");
     }
 }

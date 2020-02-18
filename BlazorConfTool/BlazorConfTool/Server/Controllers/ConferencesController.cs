@@ -25,11 +25,11 @@ namespace BlazorConfTool.Server.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<Shared.DTO.Conference> Get()
+        public IEnumerable<Shared.DTO.ConferenceOverview> Get()
         {
             var conferences = _conferencesDbContext.Conferences.ToList();
 
-            return _mapper.Map<IEnumerable<Shared.DTO.Conference>>(conferences);
+            return _mapper.Map<IEnumerable<Shared.DTO.ConferenceOverview>>(conferences);
         }
 
         [HttpGet("{id}")]

@@ -23,9 +23,11 @@ namespace BlazorConfTool.Client.Pages
 
         public Conference()
         {
-            _conferenceDetails = new ConferenceDetails();
-            _conferenceDetails.DateFrom = DateTime.UtcNow;
-            _conferenceDetails.DateTo = DateTime.UtcNow;
+            _conferenceDetails = new ConferenceDetails
+            {
+                DateFrom = DateTime.UtcNow,
+                DateTo = DateTime.UtcNow
+            };
         }
 
         protected override async Task OnInitializedAsync()
@@ -39,6 +41,13 @@ namespace BlazorConfTool.Client.Pages
                     _conferenceDetails = result;
                     break;
             }
+        }
+
+        private async Task SaveConference()
+        {
+            // await _conferencesService.AddConference(_conferenceDetails);
+
+            Console.WriteLine("NEW Conference added...");
         }
     }
 }
