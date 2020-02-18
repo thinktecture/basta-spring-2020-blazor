@@ -53,6 +53,7 @@ namespace BlazorConfTool.Client.Pages
                 case Modes.New:
                     var countriesResult = await _countriesService.ListCountries();
                     _countries = countriesResult;
+                    _conferenceDetails.Country = _countries[0];
                     break;
             }
         }
