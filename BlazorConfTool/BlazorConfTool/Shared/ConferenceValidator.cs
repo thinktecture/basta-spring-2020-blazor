@@ -6,7 +6,7 @@ namespace BlazorConfTool.Shared
     {
         public bool IsValidPeriod(DateTime start, DateTime end)
         {
-            return DateTime.Compare(end, start) > 0;
+            return DateTime.Compare(end, start) >= 0;
         }
     }
 }

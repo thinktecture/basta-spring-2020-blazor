@@ -3,7 +3,7 @@
 
 <ConferenceHeader Mode="@Mode" />
 
-<EditForm Model="@_conferenceDetails" OnValidSubmit="@SaveConference" OnInvalidSubmit="@Debug">
+<EditForm Model="_conferenceDetails" OnValidSubmit="SaveConference" OnInvalidSubmit="Debug">
     <DataAnnotationsValidator />
 
     <div class="form-group">
@@ -12,11 +12,23 @@
     </div>
     <div class="form-group">
         <label for="city">City</label>
-        <input disabled="@_isShow" type="text" @bind-value="@_conferenceDetails.City" class="form-control" id="city" placeholder="Location">
+        <input disabled="@_isShow" type="text" @bind-value="_conferenceDetails.City" class="form-control" id="city" placeholder="Location">
     </div>
     <div class="form-group">
         <label for="country">Country</label>
-        <input disabled="@_isShow" type="text" @bind-value="@_conferenceDetails.Country" class="form-control" id="country" placeholder="Location">
+        @if (Mode == Modes.Show)
+        {
+            <input disabled="@_isShow" type="text" @bind-value="_conferenceDetails.Country" class="form-control" id="country" placeholder="Location">
+        }
+        else
+        {
+            <InputSelect @bind-Value="_conferenceDetails.Country" class="form-control" id="country">
+                @foreach (string country in _countries)
+                    {
+                    <option value="@country">@country</option>
+                    }
+            </InputSelect>
+        }
     </div>
     <div class="form-group">
         <label for="datefrom">From</label>
@@ -25,7 +37,6 @@
     <div class="form-group">
         <label for="dateto">To</label>
         <InputDate @bind-Value="_conferenceDetails.DateTo" disabled="@_isShow" class="form-control" id="dateto" placeholder="End date"></InputDate>
-        <!-- <input disabled="@_isShow" type="date" value="@_conferenceDetails.DateTo" class="form-control" id="dateto" placeholder="Location">-->
     </div>
 
     <ValidationSummary />

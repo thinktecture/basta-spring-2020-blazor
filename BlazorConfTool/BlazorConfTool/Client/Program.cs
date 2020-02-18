@@ -16,6 +16,7 @@ namespace BlazorConfTool.Client
             builder.RootComponents.Add<App>("app");
 
             builder.Services.AddSingleton<ConferencesService>();
+            builder.Services.AddSingleton<CountriesService>();
 
             await builder.Build().RunAsync();
         }

@@ -3,6 +3,7 @@ using BlazorConfTool.Shared.DTO;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace BlazorConfTool.Client.Pages
@@ -19,8 +20,11 @@ namespace BlazorConfTool.Client.Pages
 
         [Inject]
         private ConferencesService _conferencesService { get; set; }
+        [Inject]
+        private CountriesService _countriesService { get; set; }
 
         private ConferenceDetails _conferenceDetails;
+        private List<string> _countries;
 
         public Conference()
         {
@@ -29,6 +33,8 @@ namespace BlazorConfTool.Client.Pages
                 DateFrom = DateTime.UtcNow,
                 DateTo = DateTime.UtcNow
             };
+
+            _countries = new List<string>();
         }
 
         protected override async Task OnInitializedAsync()
@@ -38,8 +44,13 @@ namespace BlazorConfTool.Client.Pages
             switch (Mode)
             {
                 case Modes.Show:
-                    var result = await _conferencesService.GetConferenceDetails(Id);
-                    _conferenceDetails = result;
+                    var conferenceResult = await _conferencesService.GetConferenceDetails(Id);
+                    _conferenceDetails = conferenceResult;
+                    break;
+                case Modes.Edit:
+                case Modes.New:
+                    var countriesResult = await _countriesService.ListCountries();
+                    _countries = countriesResult;
                     break;
             }
         }
