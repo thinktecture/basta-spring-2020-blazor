@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace BlazorConfTool.Client.Pages
@@ -69,6 +70,12 @@ namespace BlazorConfTool.Client.Pages
             await _conferencesService.AddConference(_conferenceDetails);
 
             Console.WriteLine("### NEW conference added...");
+        }
+
+        private async Task<IEnumerable<string>> FilterCountries(string searchText)
+        {
+            return await Task.FromResult(_countries.Where(
+                c => c.ToLower().Contains(searchText.ToLower())).ToList());
         }
     }
 }

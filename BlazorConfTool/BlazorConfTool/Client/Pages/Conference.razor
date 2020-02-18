@@ -28,6 +28,16 @@
                     <option value="@country">@country</option>
                     }
             </InputSelect>
+
+            <BlazoredTypeahead SearchMethod="FilterCountries"
+                               @bind-Value="_conferenceDetails.Country">
+                <SelectedTemplate Context="country">
+                    @country
+                </SelectedTemplate>
+                <ResultTemplate Context="country">
+                    @country
+                </ResultTemplate>
+            </BlazoredTypeahead>
         }
     </div>
     <div class="form-group">
