@@ -3,14 +3,13 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using BlazorConfTool.Server.Model;
-using System.Linq;
 using AutoMapper;
 using System.Threading.Tasks;
 using BlazorConfTool.Shared;
 using Microsoft.AspNetCore.SignalR;
 using BlazorConfTool.Server.Hubs;
 using Microsoft.AspNetCore.Authorization;
-using System.Threading;
+using Microsoft.EntityFrameworkCore;
 
 namespace BlazorConfTool.Server.Controllers
 {
@@ -39,19 +38,22 @@ namespace BlazorConfTool.Server.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<Shared.DTO.ConferenceOverview> Get()
+        public async Task<IEnumerable<Shared.DTO.ConferenceOverview>> Get()
         {
-            Thread.Sleep(2000);
-
-            var conferences = _conferencesDbContext.Conferences.ToList();
+            var conferences = await _conferencesDbContext.Conferences.ToListAsync();
 
             return _mapper.Map<IEnumerable<Shared.DTO.ConferenceOverview>>(conferences);
         }
 
         [HttpGet("{id}")]
-        public Shared.DTO.ConferenceDetails Get(string id)
+        public async Task<ActionResult<Shared.DTO.ConferenceDetails>> Get(string id)
         {
-            var conferenceDetails = _conferencesDbContext.Conferences.Where(c => c.ID == Guid.Parse(id)).FirstOrDefault();
+            var conferenceDetails = await _conferencesDbContext.Conferences.FindAsync(Guid.Parse(id));
+
+            if (conferenceDetails == null)
+            {
+                return NotFound();
+            }
 
             return _mapper.Map<Shared.DTO.ConferenceDetails>(conferenceDetails);
         }
