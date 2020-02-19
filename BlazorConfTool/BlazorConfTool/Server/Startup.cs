@@ -2,8 +2,8 @@ using AutoMapper;
 using BlazorConfTool.Server.Hubs;
 using BlazorConfTool.Server.Model;
 using BlazorConfTool.Shared;
+using GrpcGreeter;
 using IdentityServer4.AccessTokenValidation;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.ResponseCompression;
@@ -44,6 +44,8 @@ namespace BlazorConfTool.Server
                 opts.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(
                     new[] { "application/octet-stream" });
             });
+
+            services.AddGrpc();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -65,11 +67,14 @@ namespace BlazorConfTool.Server
 
             app.UseAuthorization();
 
+            app.UseGrpcWeb();
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapDefaultControllerRoute();
                 endpoints.MapHub<ConferencesHub>("/conferencesHub");
                 endpoints.MapFallbackToClientSideBlazor<Client.Program>("index.html");
+                endpoints.MapGrpcService<GreeterService>().EnableGrpcWeb();
             });
         }
     }

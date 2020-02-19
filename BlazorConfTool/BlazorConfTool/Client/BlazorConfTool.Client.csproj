@@ -7,6 +7,7 @@
 
   <ItemGroup>
     <PackageReference Include="Blazored.Typeahead" Version="4.2.2" />
+    <PackageReference Include="Grpc.Net.Client.Web" Version="2.27.0-pre1" />
     <PackageReference Include="Microsoft.AspNetCore.Blazor" Version="3.2.0-preview1.20073.1" />
     <PackageReference Include="Microsoft.AspNetCore.Blazor.Build" Version="3.2.0-preview1.20073.1" PrivateAssets="all" />
     <PackageReference Include="Microsoft.AspNetCore.Blazor.DevServer" Version="3.2.0-preview1.20073.1" PrivateAssets="all" />
