@@ -1,5 +1,7 @@
 ﻿@page "/conferences"
 
+@attribute [Authorize]
+
 @using Microsoft.AspNetCore.SignalR.Client
 @using DTO = BlazorConfTool.Shared.DTO
 
@@ -51,7 +53,7 @@ else
             _conferences = await ListConferences();
 
             StateHasChanged();
-    });
+        });
 
         await _hubConnection.StartAsync();
 

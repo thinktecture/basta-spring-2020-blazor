@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Blazor.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using BlazorConfTool.Client.Services;
+using System;
+using Sotsera.Blazor.Oidc;
 
 namespace BlazorConfTool.Client
 {
@@ -16,6 +18,15 @@ namespace BlazorConfTool.Client
             builder.Services.AddSingleton<CountriesService>();
 
             builder.Services.AddAlerts();
+
+            builder.Services.AddOptions();
+            builder.Services.AddOidc(new Uri("https://demo.identityserver.io"), (settings, siteUri) =>
+            {
+                settings.UseDefaultCallbackUris(siteUri);
+                settings.ClientId = "spa";
+                settings.ResponseType = "code";
+                settings.Scope = "openid profile email api";
+            });
 
             await builder.Build().RunAsync();
         }
