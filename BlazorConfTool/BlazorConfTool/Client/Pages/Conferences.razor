@@ -15,28 +15,25 @@
 <br />
 <br />
 
-@if (_conferences == null)
-{
-    <p><em>Fetching conferences...</em></p>
-}
-else
-{
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Title</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var conf in _conferences)
-            {
-                <tr @onclick="() => LoadDetails(conf.ID)">
-                    <td>@conf.Title</td>
+<SpinLoader IsLoading="@(_conferences == null)">
+    <ContentTemplate>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Title</th>
                 </tr>
-            }
-        </tbody>
-    </table>
-}
+            </thead>
+            <tbody>
+                @foreach (var conf in _conferences)
+                {
+                    <tr @onclick="() => LoadDetails(conf.ID)">
+                        <td>@conf.Title</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </ContentTemplate>
+</SpinLoader>
 
 @code {
     private IEnumerable<DTO.ConferenceOverview> _conferences;

@@ -10,6 +10,7 @@ using BlazorConfTool.Shared;
 using Microsoft.AspNetCore.SignalR;
 using BlazorConfTool.Server.Hubs;
 using Microsoft.AspNetCore.Authorization;
+using System.Threading;
 
 namespace BlazorConfTool.Server.Controllers
 {
@@ -40,6 +41,8 @@ namespace BlazorConfTool.Server.Controllers
         [HttpGet]
         public IEnumerable<Shared.DTO.ConferenceOverview> Get()
         {
+            Thread.Sleep(2000);
+
             var conferences = _conferencesDbContext.Conferences.ToList();
 
             return _mapper.Map<IEnumerable<Shared.DTO.ConferenceOverview>>(conferences);
