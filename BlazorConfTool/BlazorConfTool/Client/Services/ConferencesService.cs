@@ -1,5 +1,6 @@
 ﻿using BlazorConfTool.Shared.DTO;
 using Microsoft.AspNetCore.Components;
+using Sotsera.Blazor.Oidc;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -9,10 +10,10 @@ namespace BlazorConfTool.Client.Services
 {
     public class ConferencesService
     {
-        private HttpClient _httpClient;
+        private OidcHttpClient _httpClient;
         private string _conferencesUrl = "https://localhost:44323/api/conferences/";
 
-        public ConferencesService(HttpClient httpClient)
+        public ConferencesService(OidcHttpClient httpClient)
         {
             _httpClient = httpClient;
         }

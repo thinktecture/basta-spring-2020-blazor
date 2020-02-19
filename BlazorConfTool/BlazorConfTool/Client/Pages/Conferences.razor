@@ -5,7 +5,7 @@
 @using Microsoft.AspNetCore.SignalR.Client
 @using DTO = BlazorConfTool.Shared.DTO
 
-@inject HttpClient _http
+@inject Sotsera.Blazor.Oidc.OidcHttpClient _http
 @inject NavigationManager _navigation
 
 <h1>Conferences</h1>
@@ -63,7 +63,7 @@ else
     private async Task<DTO.ConferenceOverview[]> ListConferences()
     {
         return await _http.GetJsonAsync<DTO.ConferenceOverview[]>(
-            "api/conferences");
+            "/api/conferences");
     }
 
     private void LoadDetails(Guid id)
