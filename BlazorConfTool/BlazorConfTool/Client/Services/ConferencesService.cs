@@ -11,7 +11,7 @@ namespace BlazorConfTool.Client.Services
     public class ConferencesService
     {
         private OidcHttpClient _httpClient;
-        private string _conferencesUrl = "https://localhost:44323/api/conferences/";
+        private string _conferencesUrl = "/api/conferences/";
 
         public ConferencesService(OidcHttpClient httpClient)
         {
