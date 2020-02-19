@@ -9,9 +9,11 @@ using System.Threading.Tasks;
 using BlazorConfTool.Shared;
 using Microsoft.AspNetCore.SignalR;
 using BlazorConfTool.Server.Hubs;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BlazorConfTool.Server.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class ConferencesController : ControllerBase

@@ -2,6 +2,8 @@ using AutoMapper;
 using BlazorConfTool.Server.Hubs;
 using BlazorConfTool.Server.Model;
 using BlazorConfTool.Shared;
+using IdentityServer4.AccessTokenValidation;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.ResponseCompression;
@@ -28,6 +30,15 @@ namespace BlazorConfTool.Server
 
             services.AddMvc();
 
+            services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
+            .AddIdentityServerAuthentication(options =>
+            {
+                    options.Authority = "https://demo.identityserver.io";
+                    options.ApiName = "api";
+                });
+
+            services.AddAuthorization();
+
             services.AddResponseCompression(opts =>
             {
                 opts.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(
@@ -37,6 +48,8 @@ namespace BlazorConfTool.Server
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseAuthentication();
+
             app.UseResponseCompression();
 
             if (env.IsDevelopment())
@@ -49,6 +62,8 @@ namespace BlazorConfTool.Server
             app.UseClientSideBlazorFiles<Client.Program>();
 
             app.UseRouting();
+
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
