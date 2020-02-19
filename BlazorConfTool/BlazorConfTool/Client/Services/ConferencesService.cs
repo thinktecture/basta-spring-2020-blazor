@@ -21,7 +21,7 @@ namespace BlazorConfTool.Client.Services
         public async Task<List<ConferenceOverview>> ListConferences()
         {
             var result = await _httpClient.GetJsonAsync<List<ConferenceOverview>>(_conferencesUrl);
-
+            
             return result;
         }
 

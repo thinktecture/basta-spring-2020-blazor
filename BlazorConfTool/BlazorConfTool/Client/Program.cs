@@ -14,8 +14,8 @@ namespace BlazorConfTool.Client
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
             builder.RootComponents.Add<App>("app");
 
-            builder.Services.AddSingleton<ConferencesService>();
-            builder.Services.AddSingleton<CountriesService>();
+            builder.Services.AddScoped<ConferencesService>();
+            builder.Services.AddScoped<CountriesService>();
 
             builder.Services.AddAlerts();
 
