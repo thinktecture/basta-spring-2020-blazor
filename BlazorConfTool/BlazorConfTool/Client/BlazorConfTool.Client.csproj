@@ -15,7 +15,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Blazor.HttpClient" Version="3.2.0-preview1.20073.1" />
     <PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="3.1.2" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="3.1.1" />
-    <PackageReference Include="Sotsera.Blazor.Oidc" Version="1.0.0-alpha-6" />
+    <PackageReference Include="Sotsera.Blazor.Oidc" Version="1.0.0-alpha-7" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Shared\BlazorConfTool.Shared.csproj" />
