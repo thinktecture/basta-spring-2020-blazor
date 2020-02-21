@@ -5,6 +5,7 @@
 
 <EditForm Model="_conferenceDetails" OnValidSubmit="SaveConference" OnInvalidSubmit="Debug">
     <DataAnnotationsValidator />
+    <FluentValidationValidator />
 
     <div class="form-group">
         <label for="title">Title</label>
@@ -27,6 +28,7 @@
                     {
                     <option value="@country">@country</option>
                     }
+                /**/
             </InputSelect>
 
             <BlazoredTypeahead SearchMethod="FilterCountries"
