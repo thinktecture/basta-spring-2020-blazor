@@ -21,13 +21,13 @@ namespace BlazorConfTool.Server.Controllers
         private readonly ILogger<ConferencesController> _logger;
         private readonly ConferencesDbContext _conferencesDbContext;
         private readonly IMapper _mapper;
-        private readonly ConferenceValidator _validator;
+        private readonly ConferenceDetailsValidator _validator;
         private readonly IHubContext<ConferencesHub> _hubContext;
 
         public ConferencesController(ILogger<ConferencesController> logger, 
             ConferencesDbContext conferencesDbContext, 
             IMapper mapper,
-            ConferenceValidator validator,
+            ConferenceDetailsValidator validator,
             IHubContext<ConferencesHub> hubContext)
         {
             _logger = logger;
@@ -61,7 +61,7 @@ namespace BlazorConfTool.Server.Controllers
         [HttpPost]
         public async Task<ActionResult<Shared.DTO.ConferenceDetails>> PostConference(Shared.DTO.ConferenceDetails conference)
         {
-            if(!_validator.IsValidPeriod(conference.DateFrom, conference.DateTo))
+            if(!ModelState.IsValid)
             {
                 return BadRequest();
             }

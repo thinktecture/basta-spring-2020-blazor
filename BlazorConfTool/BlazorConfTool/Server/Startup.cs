@@ -12,6 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Linq;
+using FluentValidation.AspNetCore;
 
 namespace BlazorConfTool.Server
 {
@@ -19,8 +20,6 @@ namespace BlazorConfTool.Server
     {
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddTransient<ConferenceValidator>();
-
             services.AddSignalR();
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
@@ -28,7 +27,8 @@ namespace BlazorConfTool.Server
             services.AddDbContext<ConferencesDbContext>(
                 options => options.UseInMemoryDatabase(databaseName: "ConfTool"));
 
-            services.AddMvc();
+            services.AddMvc()
+                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<ConferenceDetailsValidator>());
 
             services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
             .AddIdentityServerAuthentication(options =>
