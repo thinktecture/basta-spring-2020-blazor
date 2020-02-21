@@ -8,6 +8,7 @@
 
 @inject NavigationManager _navigation
 @inject ConferencesService _conferencesService
+@inject IToastService _toastService
 
 <h1>Conferences</h1>
 
@@ -49,6 +50,8 @@
         {
             Console.WriteLine("###SignalR - NEW conference added!");
             _conferences = await ListConferences();
+
+            _toastService.ShowInfo("Conference list changed.");
 
             StateHasChanged();
         });

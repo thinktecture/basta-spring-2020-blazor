@@ -9,6 +9,7 @@ using Grpc.Net.Client.Web;
 using Microsoft.AspNetCore.Components;
 using Grpc.Net.Client;
 using GrpcGreeter;
+using Blazored.Toast;
 
 namespace BlazorConfTool.Client
 {
@@ -34,6 +35,8 @@ namespace BlazorConfTool.Client
             });
 
             builder.Services.AddAlerts();
+
+            builder.Services.AddBlazoredToast();
 
             builder.Services.AddOptions();
             builder.Services.AddOidc(new Uri("https://demo.identityserver.io"), (settings, siteUri) =>
