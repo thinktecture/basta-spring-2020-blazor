@@ -31,6 +31,16 @@ namespace BlazorConfTool.Server.Model
                     new Conference
                     {
                         ID = Guid.NewGuid(),
+                        Title = "IJS 2020 London",
+                        City = "London",
+                        Country = "England",
+                        DateFrom = new DateTime(2020, 4, 20),
+                        DateTo = new DateTime(2020, 4, 22),
+                        Url = "https://javascript-conference.com/london/"
+                    }, 
+                    new Conference
+                    {
+                        ID = Guid.NewGuid(),
                         Title = "Global Azure Bootcamp 2020",
                         City = "Hamburg",
                         Country = "Germany",

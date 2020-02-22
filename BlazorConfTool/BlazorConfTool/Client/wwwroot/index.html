@@ -5,13 +5,15 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
     <title>BlazorConfTool</title>
-    
+
     <base href="/" />
-    
+
     <link href="css/bootstrap/bootstrap.min.css" rel="stylesheet" />
     <link href="css/site.css" rel="stylesheet" />
 
     <link href="_content/Blazored.Typeahead/blazored-typeahead.css" rel="stylesheet" />
+    <link href="_content/Blazored.Toast/blazored-toast.css" rel="stylesheet" />
+    <link href="_content/BlazorPro.Spinkit/spinkit.min.css" rel="stylesheet" />
 </head>
 
 <body>
@@ -27,8 +29,11 @@
 
     <script src="_content/Blazored.Typeahead/blazored-typeahead.js"></script>
     <script src="_content/Sotsera.Blazor.Oidc/sotsera.blazor.oidc-1.0.0-alpha-7.js"></script>
-    <link href="_content/BlazorPro.Spinkit/spinkit.min.css" rel="stylesheet" />
-    <link href="_content/Blazored.Toast/blazored-toast.css" rel="stylesheet" />
+
+    <script src="libs/wc-piechart/polyfills.js" type="module"></script>
+    <script src="libs/wc-piechart/angular-scripts.js" defer></script>
+    <script src="libs/wc-piechart/wc-piechart.js" type="module"></script>
+    <script src="jsinterop/wcpiechart.js"></script>
 
     <script src="_framework/blazor.webassembly.js"></script>
 </body>

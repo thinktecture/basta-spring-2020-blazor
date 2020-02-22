@@ -24,7 +24,8 @@ namespace BlazorConfTool.Server.Controllers
                 "Switzerland",
                 "Belgium",
                 "Netherlands",
-                "USA"
+                "USA",
+                "England"
             };
 
             return countries;

@@ -12,6 +12,7 @@ namespace BlazorConfTool.Client.Services
     {
         private OidcHttpClient _httpClient;
         private string _conferencesUrl = "/api/conferences/";
+        private string _statisticsUrl = "/api/statistics/";
 
         public ConferencesService(OidcHttpClient httpClient)
         {
@@ -36,6 +37,13 @@ namespace BlazorConfTool.Client.Services
         {
             var result = await _httpClient.PostJsonAsync<ConferenceDetails>(
                 _conferencesUrl, conference);
+
+            return result;
+        }
+
+        public async Task<dynamic> GetStatistics()
+        {
+            var result = await _httpClient.GetJsonAsync<dynamic>(_statisticsUrl);
 
             return result;
         }
