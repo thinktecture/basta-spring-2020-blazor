@@ -24,7 +24,7 @@
                     <th>Title</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody  class="@_backgroundcolor">
                 @foreach (var conf in _conferences)
                 {
                     <tr @onclick="() => LoadDetails(conf.ID)">
@@ -39,6 +39,7 @@
 @code {
     private IEnumerable<DTO.ConferenceOverview> _conferences;
     private HubConnection _hubConnection;
+    private string _backgroundcolor = "bg-white";
 
     protected override async Task OnInitializedAsync()
     {
@@ -50,6 +51,14 @@
         {
             Console.WriteLine("###SignalR - NEW conference added!");
             _conferences = await ListConferences();
+
+            _backgroundcolor = "bg-success";
+            StateHasChanged();
+
+            await Task.Delay(1000);
+
+            _backgroundcolor = "bg-white";
+            StateHasChanged();
 
             _toastService.ShowInfo("Conference list changed.");
 
