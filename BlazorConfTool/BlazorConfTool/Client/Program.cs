@@ -1,15 +1,15 @@
-﻿using System.Threading.Tasks;
-using Microsoft.AspNetCore.Blazor.Hosting;
-using Microsoft.Extensions.DependencyInjection;
-using BlazorConfTool.Client.Services;
-using System;
-using Sotsera.Blazor.Oidc;
-using System.Net.Http;
-using Grpc.Net.Client.Web;
-using Microsoft.AspNetCore.Components;
-using Grpc.Net.Client;
-using GrpcGreeter;
+﻿using BlazorConfTool.Client.Services;
 using Blazored.Toast;
+using Grpc.Net.Client;
+using Grpc.Net.Client.Web;
+using GrpcGreeter;
+using Microsoft.AspNetCore.Blazor.Hosting;
+using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.DependencyInjection;
+using Sotsera.Blazor.Oidc;
+using System;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace BlazorConfTool.Client
 {

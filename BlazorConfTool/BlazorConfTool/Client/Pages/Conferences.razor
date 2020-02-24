@@ -16,26 +16,28 @@
 <br />
 <br />
 
-<SpinLoader IsLoading="@(_conferences == null)">
-    <ContentTemplate>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Title</th>
+@if (_conferences == null)
+{
+    <p><em>Loading conferences...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Title</th>
+            </tr>
+        </thead>
+        <tbody class="@_backgroundcolor">
+            @foreach (var conf in _conferences)
+            {
+                <tr @onclick="() => LoadDetails(conf.ID)">
+                    <td>@conf.Title</td>
                 </tr>
-            </thead>
-            <tbody  class="@_backgroundcolor">
-                @foreach (var conf in _conferences)
-                {
-                    <tr @onclick="() => LoadDetails(conf.ID)">
-                        <td>@conf.Title</td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </ContentTemplate>
-</SpinLoader>
-
+            }
+        </tbody>
+    </table>
+}
 @code {
     private IEnumerable<DTO.ConferenceOverview> _conferences;
     private HubConnection _hubConnection;
