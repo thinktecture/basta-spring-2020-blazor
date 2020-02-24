@@ -19,7 +19,6 @@
 
     <link href="_content/Blazored.Typeahead/blazored-typeahead.css" rel="stylesheet" />
     <link href="_content/Blazored.Toast/blazored-toast.css" rel="stylesheet" />
-    <link href="_content/BlazorPro.Spinkit/spinkit.min.css" rel="stylesheet" />
 </head>
 
 <body>
@@ -42,6 +41,14 @@
     <script src="jsinterop/wcpiechart.js"></script>
 
     <script src="_framework/blazor.webassembly.js"></script>
+
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js');
+            });
+        }
+    </script>
 </body>
 
 </html>
