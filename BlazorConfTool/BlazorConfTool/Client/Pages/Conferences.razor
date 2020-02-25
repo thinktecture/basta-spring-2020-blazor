@@ -28,7 +28,7 @@ else
                 <th>Title</th>
             </tr>
         </thead>
-        <tbody class="@_backgroundcolor">
+        <tbody>
             @foreach (var conf in _conferences)
             {
                 <tr @onclick="() => LoadDetails(conf.ID)">
@@ -41,7 +41,6 @@ else
 @code {
     private IEnumerable<DTO.ConferenceOverview> _conferences;
     private HubConnection _hubConnection;
-    private string _backgroundcolor = "bg-white";
 
     protected override async Task OnInitializedAsync()
     {
@@ -51,19 +50,11 @@ else
 
         _hubConnection.On("NewConferenceAdded", async () =>
         {
-            Console.WriteLine("###SignalR - NEW conference added!");
-            _conferences = await ListConferences();
-
-            _backgroundcolor = "bg-success";
-            StateHasChanged();
-
-            await Task.Delay(1000);
-
-            _backgroundcolor = "bg-white";
-            StateHasChanged();
-
             _toastService.ShowInfo("Conference list changed.");
 
+            Console.WriteLine("###SignalR - NEW conference added!");
+            _conferences = await ListConferences();
+            
             StateHasChanged();
         });
 
