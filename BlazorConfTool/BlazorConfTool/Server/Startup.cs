@@ -13,6 +13,9 @@ using Microsoft.Extensions.Hosting;
 using System;
 using System.Linq;
 using FluentValidation.AspNetCore;
+using System.Net.Http;
+using Microsoft.AspNetCore.Components;
+using BlazorConfTool.Client;
 
 namespace BlazorConfTool.Server
 {
@@ -30,6 +33,16 @@ namespace BlazorConfTool.Server
             services.AddMvc()
                 .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<ConferenceDetailsValidator>());
 
+            services.AddScoped<HttpClient>(s =>
+            {
+                var navigationManager = s.GetRequiredService<NavigationManager>();
+
+                return new HttpClient
+                {
+                    BaseAddress = new Uri(navigationManager.BaseUri)
+                };
+            });
+
             services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
             .AddIdentityServerAuthentication(options =>
             {
@@ -46,6 +59,8 @@ namespace BlazorConfTool.Server
             });
 
             services.AddGrpc();
+
+            ClientStartup.PopulateServices(services);
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -73,7 +88,8 @@ namespace BlazorConfTool.Server
             {
                 endpoints.MapDefaultControllerRoute();
                 endpoints.MapHub<ConferencesHub>("/conferencesHub");
-                endpoints.MapFallbackToClientSideBlazor<Client.Program>("index.html");
+                //endpoints.MapFallbackToClientSideBlazor<Client.Program>("index.html");
+                endpoints.MapFallbackToPage("/_Host");
                 endpoints.MapGrpcService<GreeterService>().EnableGrpcWeb();
             });
         }
