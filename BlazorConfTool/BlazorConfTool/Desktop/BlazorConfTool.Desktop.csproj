@@ -9,7 +9,6 @@
       <Link>wwwroot\%(RecursiveDir)%(Filename)%(Extension)</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <PackageReference Include="Microsoft.AspNetCore.Blazor.Build" Version="3.2.0-preview1.20073.1" />
     <PackageReference Include="WebWindow.Blazor" Version="0.1.0-20200214.10" />
     <ProjectReference Include="..\Client\BlazorConfTool.Client.csproj" />
     <Content Update="wwwroot\**" CopyToOutputDirectory="PreserveNewest" />
