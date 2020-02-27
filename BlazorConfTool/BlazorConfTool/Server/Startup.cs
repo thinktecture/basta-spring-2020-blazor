@@ -16,6 +16,7 @@ using FluentValidation.AspNetCore;
 using System.Net.Http;
 using Microsoft.AspNetCore.Components;
 using BlazorConfTool.Client;
+using System.Runtime.CompilerServices;
 
 namespace BlazorConfTool.Server
 {
@@ -33,6 +34,8 @@ namespace BlazorConfTool.Server
             services.AddMvc()
                 .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<ConferenceDetailsValidator>());
 
+            //services.AddScoped<NavigationManager>(n => { return new HttpNavigationManager() });
+
             services.AddScoped<HttpClient>(s =>
             {
                 var navigationManager = s.GetRequiredService<NavigationManager>();
@@ -44,8 +47,8 @@ namespace BlazorConfTool.Server
             });
 
             services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
-            .AddIdentityServerAuthentication(options =>
-            {
+                .AddIdentityServerAuthentication(options =>
+                {
                     options.Authority = "https://demo.identityserver.io";
                     options.ApiName = "api";
                 });
@@ -60,7 +63,9 @@ namespace BlazorConfTool.Server
 
             services.AddGrpc();
 
-            ClientStartup.PopulateServices(services);
+            services.AddOidc(new Uri("https://foo.com"), (x, y) => { });
+
+            //ClientStartup.PopulateServices(services);
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
