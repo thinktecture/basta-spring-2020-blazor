@@ -34,8 +34,6 @@ namespace BlazorConfTool.Server
             services.AddMvc()
                 .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<ConferenceDetailsValidator>());
 
-            //services.AddScoped<NavigationManager>(n => { return new HttpNavigationManager() });
-
             services.AddScoped<HttpClient>(s =>
             {
                 var navigationManager = s.GetRequiredService<NavigationManager>();
@@ -63,9 +61,9 @@ namespace BlazorConfTool.Server
 
             services.AddGrpc();
 
-            services.AddOidc(new Uri("https://foo.com"), (x, y) => { });
+            //services.AddOidc(new Uri("https://foo.com"), (x, y) => { });
 
-            //ClientStartup.PopulateServices(services);
+            ClientStartup.PopulateServices(services);
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
