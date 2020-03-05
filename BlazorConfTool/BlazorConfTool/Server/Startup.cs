@@ -13,6 +13,7 @@ using Microsoft.Extensions.Hosting;
 using System;
 using System.Linq;
 using FluentValidation.AspNetCore;
+using Microsoft.OpenApi.Models;
 
 namespace BlazorConfTool.Server
 {
@@ -30,6 +31,11 @@ namespace BlazorConfTool.Server
             services.AddMvc()
                 .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<ConferenceDetailsValidator>());
 
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "ConfTool API", Version = "v1" });
+            });
+
             services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
             .AddIdentityServerAuthentication(options =>
             {
@@ -44,12 +50,18 @@ namespace BlazorConfTool.Server
                 opts.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(
                     new[] { "application/octet-stream" });
             });
-
+            
             services.AddGrpc();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "ConfTool API V1");
+            });
+
             app.UseAuthentication();
 
             app.UseResponseCompression();
