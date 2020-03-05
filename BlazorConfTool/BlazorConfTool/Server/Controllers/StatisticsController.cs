@@ -8,6 +8,7 @@ namespace BlazorConfTool.Server.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Produces("application/json")]
     public class StatisticsController : ControllerBase
     {
         private readonly ConferencesDbContext _conferencesDbContext;

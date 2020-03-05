@@ -16,6 +16,7 @@ namespace BlazorConfTool.Server.Controllers
     [Authorize]
     [ApiController]
     [Route("api/[controller]")]
+    [Produces("application/json")]
     public class ConferencesController : ControllerBase
     {
         private readonly ILogger<ConferencesController> _logger;

@@ -14,6 +14,8 @@ using System;
 using System.Linq;
 using FluentValidation.AspNetCore;
 using Microsoft.OpenApi.Models;
+using System.Collections.Generic;
+using Swashbuckle.AspNetCore.SwaggerUI;
 
 namespace BlazorConfTool.Server
 {
@@ -34,14 +36,37 @@ namespace BlazorConfTool.Server
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ConfTool API", Version = "v1" });
+
+                c.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme()
+                {
+                    Type = SecuritySchemeType.OAuth2,
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    Scheme = "Bearer",
+                    OpenIdConnectUrl = new Uri("https://demo.identityserver.io"),
+                    Flows = new OpenApiOAuthFlows()
+                    {
+                        AuthorizationCode = new OpenApiOAuthFlow()
+                        {
+                            AuthorizationUrl = new Uri("https://demo.identityserver.io/connect/authorize"),
+                            TokenUrl = new Uri("https://demo.identityserver.io/connect/token"),
+                            Scopes = new Dictionary<string, string>()
+                                {
+                                    { "api", "API Access" },
+                                },
+                        },
+                    },
+                });
+
+                c.OperationFilter<SecurityRequirementsOperationFilter>();
             });
 
             services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
             .AddIdentityServerAuthentication(options =>
             {
-                    options.Authority = "https://demo.identityserver.io";
-                    options.ApiName = "api";
-                });
+                options.Authority = "https://demo.identityserver.io";
+                options.ApiName = "api";
+            });
 
             services.AddAuthorization();
 
@@ -50,7 +75,7 @@ namespace BlazorConfTool.Server
                 opts.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(
                     new[] { "application/octet-stream" });
             });
-            
+
             services.AddGrpc();
         }
 
@@ -60,6 +85,13 @@ namespace BlazorConfTool.Server
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "ConfTool API V1");
+
+                c.OAuthConfigObject = new OAuthConfigObject()
+                {
+                    ClientId = "interactive.public",
+                    ClientSecret = "secret",
+                    UsePkceWithAuthorizationCodeGrant = true,
+                };
             });
 
             app.UseAuthentication();

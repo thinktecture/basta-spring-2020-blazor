@@ -6,6 +6,7 @@ namespace BlazorConfTool.Server.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Produces("application/json")]
     public class CountriesController : ControllerBase
     {
         private readonly ILogger<CountriesController> _logger;
