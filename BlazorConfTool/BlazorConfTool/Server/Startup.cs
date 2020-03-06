@@ -16,6 +16,7 @@ using FluentValidation.AspNetCore;
 using Microsoft.OpenApi.Models;
 using System.Collections.Generic;
 using Swashbuckle.AspNetCore.SwaggerUI;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BlazorConfTool.Server
 {
@@ -32,6 +33,28 @@ namespace BlazorConfTool.Server
 
             services.AddMvc()
                 .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<ConferenceDetailsValidator>());
+
+            services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
+                .AddIdentityServerAuthentication(options =>
+                {
+                    options.Authority = "https://demo.identityserver.io";
+                    options.ApiName = "api";
+                });
+
+            services.AddAuthorization(config =>
+             {
+                 config.AddPolicy("api", builder =>
+                 {
+                     builder.RequireAuthenticatedUser();
+                     builder.RequireScope("api");
+                 });
+             });
+
+            services.AddResponseCompression(opts =>
+            {
+                opts.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(
+                    new[] { "application/octet-stream" });
+            });
 
             services.AddSwaggerGen(c =>
             {
@@ -61,39 +84,11 @@ namespace BlazorConfTool.Server
                 c.OperationFilter<SecurityRequirementsOperationFilter>();
             });
 
-            services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
-            .AddIdentityServerAuthentication(options =>
-            {
-                options.Authority = "https://demo.identityserver.io";
-                options.ApiName = "api";
-            });
-
-            services.AddAuthorization();
-
-            services.AddResponseCompression(opts =>
-            {
-                opts.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(
-                    new[] { "application/octet-stream" });
-            });
-
             services.AddGrpc();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            app.UseSwagger();
-            app.UseSwaggerUI(c =>
-            {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "ConfTool API V1");
-
-                c.OAuthConfigObject = new OAuthConfigObject()
-                {
-                    ClientId = "interactive.public",
-                    ClientSecret = "secret",
-                    UsePkceWithAuthorizationCodeGrant = true,
-                };
-            });
-
             app.UseAuthentication();
 
             app.UseResponseCompression();
@@ -119,6 +114,19 @@ namespace BlazorConfTool.Server
                 endpoints.MapHub<ConferencesHub>("/conferencesHub");
                 endpoints.MapFallbackToClientSideBlazor<Client.Program>("index.html");
                 endpoints.MapGrpcService<GreeterService>().EnableGrpcWeb();
+            });
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "ConfTool API V1");
+
+                c.OAuthConfigObject = new OAuthConfigObject()
+                {
+                    ClientId = "interactive.public",
+                    ClientSecret = "secret",
+                    UsePkceWithAuthorizationCodeGrant = true,
+                };
             });
         }
     }

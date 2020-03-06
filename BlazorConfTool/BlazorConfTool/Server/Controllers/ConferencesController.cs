@@ -13,7 +13,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BlazorConfTool.Server.Controllers
 {
-    [Authorize]
+    [Authorize("api")]
     [ApiController]
     [Route("api/[controller]")]
     [Produces("application/json")]

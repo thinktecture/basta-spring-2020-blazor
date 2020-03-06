@@ -1,6 +1,10 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using IdentityModel;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization.Infrastructure;
+using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -8,14 +12,31 @@ namespace BlazorConfTool.Server
 {
     public class SecurityRequirementsOperationFilter : IOperationFilter
     {
+        private readonly AuthorizationOptions _authorizationOptions;
+
+        public SecurityRequirementsOperationFilter(IOptions<AuthorizationOptions> authorizationOptions)
+        {
+            // Beware: This might only part of the truth. If someone exchanges the IAuthorizationPolicyProvider and that loads
+            // policies and requirements from another source than the configured options, we might not get all requirements
+            // from here. But then we would have to make asynchronous calls from this synchronous interface.
+            _authorizationOptions = authorizationOptions?.Value ?? throw new ArgumentNullException(nameof(authorizationOptions));
+        }
+
         public void Apply(OpenApiOperation operation, OperationFilterContext context)
         {
-            // Policy names map to scopes
-            var requiredScopes = context.MethodInfo
+            var requiredPolicies = context.MethodInfo
                 .GetCustomAttributes(true)
+                .Concat(context.MethodInfo.DeclaringType.GetCustomAttributes(true))
                 .OfType<AuthorizeAttribute>()
                 .Select(attr => attr.Policy)
                 .Distinct();
+
+            var requiredScopes = requiredPolicies.Select(p => _authorizationOptions.GetPolicy(p))
+                .SelectMany(r => r.Requirements.OfType<ClaimsAuthorizationRequirement>())
+                .Where(cr => cr.ClaimType == JwtClaimTypes.Scope)
+                .SelectMany(r => r.AllowedValues)
+                .Distinct()
+                .ToList();
 
             if (requiredScopes.Any())
             {
@@ -28,12 +49,12 @@ namespace BlazorConfTool.Server
                 };
 
                 operation.Security = new List<OpenApiSecurityRequirement>
-            {
-                new OpenApiSecurityRequirement
                 {
-                    [ oAuthScheme ] = requiredScopes.ToList()
-                }
-            };
+                    new OpenApiSecurityRequirement
+                    {
+                        [ oAuthScheme ] = requiredScopes.ToList()
+                    }
+                };
             }
         }
     }
