@@ -50,12 +50,6 @@ namespace BlazorConfTool.Server
                  });
              });
 
-            services.AddResponseCompression(opts =>
-            {
-                opts.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(
-                    new[] { "application/octet-stream" });
-            });
-
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ConfTool API", Version = "v1" });
@@ -91,16 +85,14 @@ namespace BlazorConfTool.Server
         {
             app.UseAuthentication();
 
-            app.UseResponseCompression();
-
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseBlazorDebugging();
+                app.UseWebAssemblyDebugging();
             }
 
             app.UseStaticFiles();
-            app.UseClientSideBlazorFiles<Client.Program>();
+            app.UseBlazorFrameworkFiles();
 
             app.UseRouting();
 
@@ -112,7 +104,7 @@ namespace BlazorConfTool.Server
             {
                 endpoints.MapDefaultControllerRoute();
                 endpoints.MapHub<ConferencesHub>("/conferencesHub");
-                endpoints.MapFallbackToClientSideBlazor<Client.Program>("index.html");
+                endpoints.MapFallbackToFile("index.html");
                 endpoints.MapGrpcService<GreeterService>().EnableGrpcWeb();
             });
 

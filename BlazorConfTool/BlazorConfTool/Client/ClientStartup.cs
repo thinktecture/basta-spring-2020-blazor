@@ -15,6 +15,8 @@ namespace BlazorConfTool.Client
     {
         public static void PopulateServices(IServiceCollection services)
         {
+            services.AddBaseAddressHttpClient();
+
             services.AddScoped<ConferencesService>();
             services.AddScoped<CountriesService>();
 
