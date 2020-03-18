@@ -63,9 +63,9 @@ else
         _conferences = await ListConferences();
     }
 
-    private async Task<List<DTO.ConferenceOverview>> ListConferences()
+    private async Task<IEnumerable<DTO.ConferenceOverview>> ListConferences()
     {
-        return await _conferencesService.ListConferences();
+        return await _conferencesService.Conferences.GetAsync();
     }
 
     private void LoadDetails(Guid id)

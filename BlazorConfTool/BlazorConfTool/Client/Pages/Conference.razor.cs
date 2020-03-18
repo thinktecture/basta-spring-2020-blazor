@@ -47,13 +47,13 @@ namespace BlazorConfTool.Client.Pages
             switch (Mode)
             {
                 case Modes.Show:
-                    var conferenceResult = await _conferencesService.GetConferenceDetails(Id);
+                    var conferenceResult = await _conferencesService.Conferences.GetAsync(Id.ToString());
                     _conferenceDetails = conferenceResult;
                     break;
                 case Modes.Edit:
                 case Modes.New:
-                    var countriesResult = await _countriesService.ListCountries();
-                    _countries = countriesResult;
+                    var countriesResult = await _countriesService.Countries.GetAsync();
+                    _countries = new List<string>(countriesResult);
                     _conferenceDetails.Country = _countries[0];
                     break;
             }
@@ -67,7 +67,7 @@ namespace BlazorConfTool.Client.Pages
                 return;
             }
 
-            await _conferencesService.AddConference(_conferenceDetails);
+            await _conferencesService.Conferences.PostConferenceAsync(_conferenceDetails);
 
             Console.WriteLine("### NEW conference added...");
         }

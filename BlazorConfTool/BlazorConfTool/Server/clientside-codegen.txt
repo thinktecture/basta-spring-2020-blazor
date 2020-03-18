@@ -1,0 +1,15 @@
+﻿https://github.com/zijianhuang/webapiclientgen
+
+https://github.com/zijianhuang/webapiclientgen/wiki/Getting-Started
+
+{
+	"ApiSelections": {
+		"DataModelAssemblyNames": [
+			"BlazorConfTool.Shared",
+			"BlazorConfTool.Server"
+		]
+	},
+	"ClientApiOutputs": {
+		"ClientLibraryProjectFolderName": "..\\Client"
+	}
+}

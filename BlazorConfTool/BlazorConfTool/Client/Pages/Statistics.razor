@@ -39,7 +39,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        var result = await _conferencesService.GetStatistics();
+        var result = await _conferencesService.Statistics.GetDistributionAsync();
         _data = JsonSerializer.Serialize(result);
     }
 

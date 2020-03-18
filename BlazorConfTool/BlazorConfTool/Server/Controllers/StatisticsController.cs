@@ -19,8 +19,8 @@ namespace BlazorConfTool.Server.Controllers
             _conferencesDbContext = conferencesDbContext;
         }
 
-        [HttpGet]
-        public async Task<dynamic> Get()
+        [HttpGet("distribution")]
+        public async Task<dynamic> GetDistribution()
         {
             var conferences = await _conferencesDbContext.Conferences.ToListAsync();
             var result = conferences.GroupBy(a => a.Country).Select(

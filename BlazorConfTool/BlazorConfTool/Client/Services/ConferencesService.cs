@@ -1,51 +1,20 @@
-﻿using BlazorConfTool.Shared.DTO;
-using Microsoft.AspNetCore.Components;
+﻿using BlazorConfTool.Server.Controllers.Client;
 using Sotsera.Blazor.Oidc;
 using System;
-using System.Collections.Generic;
-using System.Net.Http;
-using System.Threading.Tasks;
 
 namespace BlazorConfTool.Client.Services
 {
     public class ConferencesService
     {
-        private OidcHttpClient _httpClient;
-        private string _conferencesUrl = "https://localhost:44323/api/conferences/";
-        private string _statisticsUrl = "https://localhost:44323/api/statistics/";
+        private string _apiBaseUrl = "https://localhost:44323/";
+
+        public Conferences Conferences { get; set; }
+        public Statistics Statistics { get; set; }
 
         public ConferencesService(OidcHttpClient httpClient)
         {
-            _httpClient = httpClient;
-        }
-
-        public async Task<List<ConferenceOverview>> ListConferences()
-        {
-            var result = await _httpClient.GetJsonAsync<List<ConferenceOverview>>(_conferencesUrl);
-            
-            return result;
-        }
-
-        public async Task<ConferenceDetails> GetConferenceDetails(Guid id)
-        {
-            var result = await _httpClient.GetJsonAsync<ConferenceDetails>(_conferencesUrl + id);
-
-            return result;
-        }
-
-        public async Task<ConferenceDetails> AddConference(ConferenceDetails conference)
-        {
-            var result = await _httpClient.PostJsonAsync<ConferenceDetails>(
-                _conferencesUrl, conference);
-
-            return result;
-        }
-
-        public async Task<dynamic> GetStatistics()
-        {
-            var result = await _httpClient.GetJsonAsync<dynamic>(_statisticsUrl);
-
-            return result;
+            Conferences = new Conferences(httpClient, new Uri(_apiBaseUrl));
+            Statistics = new Statistics(httpClient, new Uri(_apiBaseUrl));
         }
     }
 }

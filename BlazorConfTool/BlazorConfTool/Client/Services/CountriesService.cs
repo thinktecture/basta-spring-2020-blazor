@@ -1,25 +1,18 @@
-﻿using Microsoft.AspNetCore.Components;
-using System.Collections.Generic;
+﻿using BlazorConfTool.Server.Controllers.Client;
+using System;
 using System.Net.Http;
-using System.Threading.Tasks;
 
 namespace BlazorConfTool.Client.Services
 {
     public class CountriesService
     {
-        private HttpClient _httpClient;
-        private string _countriesUrl = "https://localhost:44323/api/countries/";
+        private string _apiBaseUrl = "https://localhost:44323/";
+
+        public Countries Countries { get; set; }
 
         public CountriesService(HttpClient httpClient)
         {
-            _httpClient = httpClient;
-        }
-
-        public async Task<List<string>> ListCountries()
-        {
-            var result = await _httpClient.GetJsonAsync<List<string>>(_countriesUrl);
-
-            return result;
+            Countries = new Countries(httpClient, new Uri(_apiBaseUrl));
         }
     }
 }
