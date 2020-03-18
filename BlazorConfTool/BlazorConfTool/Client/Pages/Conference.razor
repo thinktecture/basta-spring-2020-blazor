@@ -32,7 +32,8 @@
             </InputSelect>
             -->
             <BlazoredTypeahead SearchMethod="FilterCountries"
-                               @bind-Value="_conferenceDetails.Country">
+                               @bind-Value="_conferenceDetails.Country"
+                               EnableDropDown="true">
                 <SelectedTemplate Context="country">
                     @country
                 </SelectedTemplate>
