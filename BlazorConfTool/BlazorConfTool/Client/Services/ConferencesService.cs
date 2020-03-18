@@ -1,9 +1,9 @@
 ﻿using BlazorConfTool.Shared.DTO;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.SignalR.Client;
 using Sotsera.Blazor.Oidc;
 using System;
 using System.Collections.Generic;
-using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace BlazorConfTool.Client.Services
@@ -11,12 +11,32 @@ namespace BlazorConfTool.Client.Services
     public class ConferencesService
     {
         private OidcHttpClient _httpClient;
-        private string _conferencesUrl = "https://localhost:44323/api/conferences/";
-        private string _statisticsUrl = "https://localhost:44323/api/statistics/";
+        private readonly string _baseUrl = "https://localhost:44323/";
+        private string _conferencesUrl;
+        private string _statisticsUrl;
+        private HubConnection _hubConnection;
+
+        public EventHandler ConferenceListChanged;
 
         public ConferencesService(OidcHttpClient httpClient)
         {
             _httpClient = httpClient;
+            _conferencesUrl = new Uri(new Uri(_baseUrl), "api/conferences/").ToString();
+            _statisticsUrl = new Uri(new Uri(_baseUrl), "api/statistics/").ToString();
+    }
+
+        public async Task Init()
+        {
+            _hubConnection = new HubConnectionBuilder()
+                .WithUrl(new Uri(new Uri(_baseUrl), "conferencesHub"))
+                .Build();
+
+            _hubConnection.On("NewConferenceAdded", () =>
+            {
+                ConferenceListChanged?.Invoke(this, null);
+            });
+
+            await _hubConnection.StartAsync();
         }
 
         public async Task<List<ConferenceOverview>> ListConferences()

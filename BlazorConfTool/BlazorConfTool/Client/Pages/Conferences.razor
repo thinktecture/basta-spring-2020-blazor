@@ -1,8 +1,9 @@
 ﻿@page "/conferences"
 
+@implements IDisposable
+
 @attribute [Authorize]
 
-@using Microsoft.AspNetCore.SignalR.Client
 @using DTO = BlazorConfTool.Shared.DTO
 @using BlazorConfTool.Client.Services
 
@@ -40,27 +41,24 @@ else
 }
 @code {
     private IEnumerable<DTO.ConferenceOverview> _conferences;
-    private HubConnection _hubConnection;
 
     protected override async Task OnInitializedAsync()
     {
-        _hubConnection = new HubConnectionBuilder()
-            .WithUrl(_navigation.ToAbsoluteUri("/conferencesHub"))
-            .Build();
+        _conferencesService.ConferenceListChanged += HandleConferenceUpdates;
 
-        _hubConnection.On("NewConferenceAdded", async () =>
-        {
-            _toastService.ShowInfo("Conference list changed.");
-
-            Console.WriteLine("###SignalR - NEW conference added!");
-            _conferences = await ListConferences();
-            
-            StateHasChanged();
-        });
-
-        await _hubConnection.StartAsync();
+        await _conferencesService.Init();
 
         _conferences = await ListConferences();
+    }
+
+    private async void HandleConferenceUpdates(object sender, EventArgs args)
+    {
+        _toastService.ShowInfo("Conference list changed.");
+
+        Console.WriteLine("###SignalR - NEW conference added!");
+        _conferences = await ListConferences();
+
+        StateHasChanged();
     }
 
     private async Task<List<DTO.ConferenceOverview>> ListConferences()
@@ -76,5 +74,15 @@ else
     private void AddConference(MouseEventArgs e)
     {
         _navigation.NavigateTo("conferences/new");
+    }
+
+    public void Dispose()
+    {
+        GC.SuppressFinalize(this);
+
+        if (_conferencesService.ConferenceListChanged != null)
+        {
+            _conferencesService.ConferenceListChanged -= HandleConferenceUpdates;
+        }
     }
 }
