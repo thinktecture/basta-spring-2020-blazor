@@ -183,7 +183,7 @@ namespace BlazorConfTool.Server.Controllers.Client
 			try
 			{
 				responseMessage.EnsureSuccessStatusCode();
-				return new Newtonsoft.Json.Linq.JObject(responseMessage);
+				return responseMessage;
 			}
 			finally
 			{

@@ -10,6 +10,7 @@ https://github.com/zijianhuang/webapiclientgen/wiki/Getting-Started
 		]
 	},
 	"ClientApiOutputs": {
-		"ClientLibraryProjectFolderName": "..\\Client"
+		"ClientLibraryProjectFolderName": "..\\Client",
+		"FileName": "WebApiClients.generated.cs"
 	}
 }
