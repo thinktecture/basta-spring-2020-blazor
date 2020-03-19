@@ -17,6 +17,7 @@ using Microsoft.OpenApi.Models;
 using System.Collections.Generic;
 using Swashbuckle.AspNetCore.SwaggerUI;
 using Microsoft.AspNetCore.Authorization;
+using Toolbelt.Extensions.DependencyInjection;
 
 namespace BlazorConfTool.Server
 {
@@ -89,6 +90,7 @@ namespace BlazorConfTool.Server
             {
                 app.UseDeveloperExceptionPage();
                 app.UseWebAssemblyDebugging();
+                app.UseCssLiveReload();
             }
 
             app.UseStaticFiles();
