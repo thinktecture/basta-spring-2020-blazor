@@ -183,7 +183,12 @@ namespace BlazorConfTool.Server.Controllers.Client
 			try
 			{
 				responseMessage.EnsureSuccessStatusCode();
-				return responseMessage;
+				var stream = await responseMessage.Content.ReadAsStreamAsync();
+				using (JsonReader jsonReader = new JsonTextReader(new System.IO.StreamReader(stream)))
+				{
+				var serializer = new JsonSerializer();
+				return serializer.Deserialize<Newtonsoft.Json.Linq.JObject>(jsonReader);
+				}
 			}
 			finally
 			{
